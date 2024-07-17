@@ -1,0 +1,27 @@
+.navbar-main-container {
+  background-color: #dbeafe;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 13vh;
+}
+
+.navbar-container {
+  width: 1100px;
+  display: flex;
+  align-items: center;
+}
+
+.next-slides-logo {
+  width: 80px;
+}
+
+.nav-heading {
+  color: #0f172a;
+  font-family: 'Bree Serif';
+  font-size: 40px;
+  padding-left: 30px;
+  line-height: 1.5;
+  font-weight: 500;
+}
