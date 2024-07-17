@@ -1,11 +1,12 @@
 .each-slide-item {
-  list-style-type: none;
   display: flex;
   justify-content: center;
   width: 100%;
   margin-bottom: 20px;
   font-family: 'Bree Serif';
   border-radius: 10px;
+  padding-top: 15px;
+  padding-bottom: 15px;
 }
 
 .slide-count {

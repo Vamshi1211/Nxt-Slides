@@ -1,16 +1,7 @@
 import './index.css'
 
 const SlideContainer = props => {
-  const {
-    eachSlide,
-    onClickSlide,
-    isActive,
-    indexValue,
-    changeHeadingValue,
-    headingValue,
-    changeDesValue,
-    desValue,
-  } = props
+  const {eachSlide, onClickSlide, isActive, indexValue} = props
   const {heading, description, id} = eachSlide
 
   const onClickEachSlide = () => {
@@ -32,12 +23,8 @@ const SlideContainer = props => {
         className="each-slide-button"
         onClick={onClickEachSlide}
       >
-        <h1 className="slide-heading">
-          {changeHeadingValue && isActive ? headingValue : heading}
-        </h1>
-        <p className="slide-des">
-          {changeDesValue && isActive ? desValue : description}
-        </p>
+        <h1 className="slide-heading">{heading}</h1>
+        <p className="slide-des">{description}</p>
       </button>
     </li>
   )

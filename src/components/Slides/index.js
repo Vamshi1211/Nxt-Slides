@@ -49,59 +49,82 @@ class Slides extends Component {
   state = {
     activeSlide: initialSlidesList[0].id,
     slidesList: initialSlidesList,
-    headingValue: 'heading',
     changeHeading: false,
     changeDes: false,
-    desValue: 'Description',
+    onHeadingClicked: false,
+    onParaClicked: false,
   }
 
   onClickSlide = uniqueId => {
-    const {slidesList} = this.state
-
-    const indexPresent = slidesList.includes(uniqueId)
-    console.log(indexPresent)
-
-    this.setState({activeSlide: uniqueId, changeHeading: false})
+    this.setState({
+      activeSlide: uniqueId,
+    })
   }
 
   onClickNew = () => {
-    // const {activeSlide, slidesList} = this.state
-
-    // const indexValue = slidesList.findIndex(
-    //   eachItem => eachItem.id === activeSlide,
-    // )
-
+    const {activeSlide, slidesList} = this.state
     const newSlide = {
       id: uuidv4(),
       heading: 'Heading',
       description: 'Description',
     }
-    this.setState(prevState => ({
-      slidesList: [...prevState.slidesList, newSlide],
-    }))
+    const index = slidesList.findIndex(eachItem => eachItem.id === activeSlide)
+    slidesList.splice(index + 1, 0, newSlide)
+
+    this.setState({activeSlide: newSlide.id})
   }
 
   onChangeHeading = event => {
-    this.setState({headingValue: event.target.value, changeHeading: true})
+    const {slidesList} = this.state
+
+    const updatedList = slidesList.map(eachItem => {
+      if (eachItem.id === event.target.id) {
+        return {...eachItem, heading: event.target.value}
+      }
+      return eachItem
+    })
+
+    this.setState({slidesList: updatedList})
   }
 
-  changeDescription = event => {
-    this.setState({desValue: event.target.value, changeDes: true})
+  onChangeDescription = event => {
+    const {slidesList} = this.state
+
+    const updatedList = slidesList.map(eachItem => {
+      if (eachItem.id === event.target.id) {
+        return {...eachItem, description: event.target.value}
+      }
+      return eachItem
+    })
+
+    this.setState({slidesList: updatedList})
   }
+
+  onClickHeading = () => {
+    this.setState({onHeadingClicked: true})
+  }
+
+  onClickPara = () => {
+    this.setState({onParaClicked: true})
+  }
+
+  onFocusLost = () => {}
 
   render() {
     const {
-      activeSlide,
       slidesList,
-      headingValue,
+      activeSlide,
       changeHeading,
-      desValue,
       changeDes,
+      onHeadingClicked,
+      onParaClicked,
     } = this.state
 
     const filteredData = slidesList.filter(
       eachItem => eachItem.id === activeSlide,
     )
+
+    // const storedValue = JSON.parse(localStorage.getItem(activeSlide))
 
     return (
       <div className="main-slide-container">
@@ -115,7 +138,7 @@ class Slides extends Component {
             <p className="icon-name">New</p>
           </button>
 
-          <ol className="slide-list-container">
+          <ol className="slide-list-container" testid="slide">
             {slidesList.map((eachItem, index) => (
               <SlidesContainer
                 key={eachItem.id}
@@ -124,9 +147,7 @@ class Slides extends Component {
                 isActive={eachItem.id === activeSlide}
                 indexValue={index}
                 changeHeadingValue={changeHeading}
-                headingValue={headingValue}
                 changeDesValue={changeDes}
-                desValue={desValue}
               />
             ))}
           </ol>
@@ -136,27 +157,31 @@ class Slides extends Component {
             const {heading, description} = eachItem
 
             return (
-              <div className="slide-item">
-                {changeHeading ? (
-                  <h1 className="heading-input">{heading}</h1>
-                ) : (
+              <div className="slide-item" key={eachItem.id}>
+                {onHeadingClicked ? (
                   <input
-                    type="text"
                     className="heading-input"
-                    value={changeHeading ? headingValue : heading}
+                    value={heading}
                     onChange={this.onChangeHeading}
-                    onBlur={this.onLostFocus}
+                    onBlur={this.onFocusLost}
+                    id={eachItem.id}
                   />
-                )}
-
-                {changeDes ? (
-                  <p className="des-input">{description}</p>
                 ) : (
+                  <h1 className="heading-input" onClick={this.onClickHeading}>
+                    {heading}
+                  </h1>
+                )}
+                {onParaClicked ? (
                   <input
                     className="des-input"
-                    onChange={this.changeDescription}
-                    value={changeDes ? desValue : description}
+                    onChange={this.onChangeDescription}
+                    value={description}
+                    id={eachItem.id}
                   />
+                ) : (
+                  <p className="des-input" onClick={this.onClickPara}>
+                    {description}
+                  </p>
                 )}
               </div>
             )
