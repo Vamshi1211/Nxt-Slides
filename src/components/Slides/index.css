@@ -67,11 +67,23 @@
 .heading-input {
   background-color: transparent;
   outline: none;
-  font-size: 36px;
+  font-size: 40px;
   color: #0967d2;
   font-family: 'Bree Serif';
   text-align: center;
   border: none;
+  font-weight: 600;
+  width: 90%;
+}
+
+.active-heading {
+  background-color: #dbeafe;
+}
+
+.heading {
+  font-size: 40px;
+  color: #0967d2;
+  font-family: 'Bree Serif';
 }
 
 .des-input {
@@ -82,4 +94,14 @@
   font-family: 'Bree Serif';
   text-align: center;
   border: none;
+  margin-top: 20px;
+  width: 60%;
+}
+.active-des {
+  background-color: #dbeafe;
+}
+.des {
+  font-size: 28px;
+  color: #475569;
+  font-family: 'Bree Serif';
 }

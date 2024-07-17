@@ -49,8 +49,6 @@ class Slides extends Component {
   state = {
     activeSlide: initialSlidesList[0].id,
     slidesList: initialSlidesList,
-    changeHeading: false,
-    changeDes: false,
     onHeadingClicked: false,
     onParaClicked: false,
   }
@@ -108,14 +106,36 @@ class Slides extends Component {
     this.setState({onParaClicked: true})
   }
 
-  onFocusLost = () => {}
+  onHeadingFocusLost = event => {
+    const {slidesList} = this.state
+
+    const updatedList = slidesList.map(eachItem => {
+      if (eachItem.id === event.target.id && eachItem.heading === '') {
+        return {...eachItem, heading: 'Heading'}
+      }
+      return eachItem
+    })
+
+    this.setState({slidesList: updatedList, onHeadingClicked: false})
+  }
+
+  onDescriptionFocusLost = event => {
+    const {slidesList} = this.state
+
+    const updatedList = slidesList.map(eachItem => {
+      if (eachItem.id === event.target.id && eachItem.description === '') {
+        return {...eachItem, description: 'Description'}
+      }
+      return eachItem
+    })
+
+    this.setState({slidesList: updatedList, onParaClicked: false})
+  }
 
   render() {
     const {
       slidesList,
       activeSlide,
-      changeHeading,
-      changeDes,
       onHeadingClicked,
       onParaClicked,
     } = this.state
@@ -124,7 +144,9 @@ class Slides extends Component {
       eachItem => eachItem.id === activeSlide,
     )
 
-    // const storedValue = JSON.parse(localStorage.getItem(activeSlide))
+    const isHeadingClicked = onHeadingClicked ? 'active-heading' : ''
+
+    const isParaClicked = onParaClicked ? 'active-des' : ''
 
     return (
       <div className="main-slide-container">
@@ -138,7 +160,7 @@ class Slides extends Component {
             <p className="icon-name">New</p>
           </button>
 
-          <ol className="slide-list-container" testid="slide">
+          <ol className="slide-list-container">
             {slidesList.map((eachItem, index) => (
               <SlidesContainer
                 key={eachItem.id}
@@ -146,8 +168,6 @@ class Slides extends Component {
                 onClickSlide={this.onClickSlide}
                 isActive={eachItem.id === activeSlide}
                 indexValue={index}
-                changeHeadingValue={changeHeading}
-                changeDesValue={changeDes}
               />
             ))}
           </ol>
@@ -157,29 +177,30 @@ class Slides extends Component {
             const {heading, description} = eachItem
 
             return (
-              <div className="slide-item" key={eachItem.id}>
+              <div className="slide-item" key={eachItem.id} testid="slide">
                 {onHeadingClicked ? (
                   <input
-                    className="heading-input"
+                    className={`heading-input ${isHeadingClicked}`}
                     value={heading}
                     onChange={this.onChangeHeading}
-                    onBlur={this.onFocusLost}
+                    onBlur={this.onHeadingFocusLost}
                     id={eachItem.id}
                   />
                 ) : (
-                  <h1 className="heading-input" onClick={this.onClickHeading}>
+                  <h1 className="heading" onClick={this.onClickHeading}>
                     {heading}
                   </h1>
                 )}
                 {onParaClicked ? (
                   <input
-                    className="des-input"
+                    className={`des-input ${isParaClicked}`}
                     onChange={this.onChangeDescription}
                     value={description}
                     id={eachItem.id}
+                    onBlur={this.onDescriptionFocusLost}
                   />
                 ) : (
-                  <p className="des-input" onClick={this.onClickPara}>
+                  <p className="des" onClick={this.onClickPara}>
                     {description}
                   </p>
                 )}

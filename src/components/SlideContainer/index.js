@@ -8,16 +8,16 @@ const SlideContainer = props => {
     onClickSlide(id)
   }
 
-  const count = indexValue + 1
+  const slideNumber = indexValue + 1
 
   const activeSlide = isActive === true ? 'active-slide' : ''
 
   return (
     <li
       className={`each-slide-item ${activeSlide}`}
-      testid={`slideTab${count}`}
+      testid={`slideTab${slideNumber}`}
     >
-      <p className="slide-count">{count}</p>
+      <p className="slide-count">{slideNumber}</p>
       <button
         type="button"
         className="each-slide-button"
